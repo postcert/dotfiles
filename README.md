@@ -1,4 +1,3 @@
-# zsh-castle
+# Dotfiles
 
-Pretty much Oh-My-Zsh with customization.
-Should get better over time.
+Should be pretty much standard oh-my-zsh and spf13
