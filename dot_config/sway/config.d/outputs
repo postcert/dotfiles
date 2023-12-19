@@ -1,0 +1,33 @@
+output "DP-1" {
+    mode  2560x1440@59.951Hz
+    pos 0 0
+    # transform normal
+    # scale 1.0
+    # scale_filter nearest
+    # adaptive_sync off
+    dpms on
+}
+output "DP-2" {
+    mode  2560x1440@169.831Hz
+    pos 0 1440
+    # transform normal
+    # scale 1.0
+    # scale_filter nearest
+    adaptive_sync on
+    dpms on
+}
+output "HDMI-A-1" {
+    # 3840x2160 @ 119.880 Hz
+    # 3840x2160 @ 100.000 Hz
+    # 3840x2160 @ 60.000 Hz
+    mode  3840x2160@119.880Hz
+    # mode  3840x2160@60.000Hz
+    pos 2560 720
+    # transform normal
+    # scale 1.0
+    # scale_filter nearest
+    adaptive_sync on
+    dpms on
+}
+
+exec xrandr --output "HDMI-A-1" --primary

@@ -1,0 +1,84 @@
+// Global 
+[
+  {
+      "ipc": true,
+      "id": "bar-0",
+
+      "layer": "top",
+      "position": "top",
+
+      // If height property would be not present, it'd be calculated dynamically
+      "height": 30,
+
+      "output": "HDMI-A-1",
+
+      "modules-left": [
+          "custom/launcher",
+          "sway/workspaces",
+          "sway/window",
+          "sway/mode",
+      ],
+  
+      "modules-center": [
+      ],
+
+      "modules-right": [
+          "custom/pomodoro",
+          "custom/ddc_brightness_cached_gigabyte",
+          "custom/ddc_brightness_cached_dell",
+          "network",
+          "idle_inhibitor",
+          "memory",
+          "cpu",
+          "pulseaudio",
+          //"backlight#icon",
+          //"backlight#value",
+          "tray",
+          "custom/weather",
+          "clock",
+          "custom/power",
+      ],
+      "include" : [
+        "~/.config/waybar/default_modules.json"
+        ]
+  },
+  {
+      "ipc": true,
+      "id": "bar-1",
+
+      "layer": "top",
+      "position": "top",
+
+      // If height property would be not present, it'd be calculated dynamically
+      "height": 30,
+
+      "output": "!HDMI-A-1",
+
+      "modules-left": [
+          "custom/launcher",
+          "sway/workspaces",
+          "sway/window",
+          "sway/mode",
+      ],
+  
+      "modules-center": [
+      ],
+
+      "modules-right": [
+          "network",
+          "idle_inhibitor",
+          "memory",
+          "cpu",
+          "pulseaudio",
+          //"backlight#icon",
+          //"backlight#value",
+          "tray",
+          "custom/weather",
+          "clock",
+          "custom/power",
+      ],
+      "include" : [
+        "~/.config/waybar/default_modules.json"
+        ]
+  },
+]

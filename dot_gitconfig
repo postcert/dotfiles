@@ -1,0 +1,5 @@
+[user]
+	email = postcert@gmail.com
+	name = postcert
+[init]
+	defaultBranch = main

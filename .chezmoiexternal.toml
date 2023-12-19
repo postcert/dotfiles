@@ -1,0 +1,51 @@
+[".oh-my-zsh"]
+    type = "archive"
+    url = "https://github.com/ohmyzsh/ohmyzsh/archive/master.tar.gz"
+    # exact = true
+    stripComponents = 1
+    refreshPeriod = "168h"
+[".oh-my-zsh/custom/plugins/zsh-syntax-highlighting"]
+    type = "archive"
+    url = "https://github.com/zsh-users/zsh-syntax-highlighting/archive/master.tar.gz"
+    exact = true
+    stripComponents = 1
+    refreshPeriod = "168h"
+[".oh-my-zsh/custom/plugins/zsh-completions"]
+    type = "archive"
+    url = "https://github.com/zsh-users/zsh-completions/archive/master.tar.gz"
+    exact = true
+    stripComponents = 1
+    refreshPeriod = "168h"
+[".oh-my-zsh/custom/themes/powerlevel10k"]
+    type = "archive"
+    url = "https://github.com/romkatv/powerlevel10k/archive/master.tar.gz"
+    exact = true
+    stripComponents = 1
+    refreshPeriod = "168h"
+[".tmux/plugins/tpm"]
+    type = "archive"
+    url = "https://github.com/tmux-plugins/tpm/archive/master.tar.gz"
+    exact = true
+    stripComponents = 1
+    refreshPeriod = "168h"
+# Manage manually
+# [".config/nvim"]
+#     type = "archive"
+#     url = "https://github.com/LazyVim/starter/archive/main.tar.gz"
+#     # exact = true
+#     stripComponents = 1
+#     refreshPeriod = "168h"
+[".config/sway/themes"]
+    type = "archive"
+    url = "https://github.com/catppuccin/i3/archive/main.tar.gz"
+    # exact = true
+    stripComponents = 2
+    refreshPeriod = "168h"
+    include = ["*/themes/**"]
+[".config/waybar/themes"]
+    type = "archive"
+    url = "https://github.com/catppuccin/waybar/archive/main.tar.gz"
+    # exact = true
+    stripComponents = 2
+    refreshPeriod = "168h"
+    include = ["*/themes/**"]
