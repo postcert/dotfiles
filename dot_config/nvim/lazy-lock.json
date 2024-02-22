@@ -60,7 +60,7 @@
   "nvim-ts-context-commentstring": { "branch": "main", "commit": "7ab799a9792f7cf3883cf28c6a00ad431f3d382a" },
   "nvim-web-devicons": { "branch": "master", "commit": "14ac5887110b06b89a96881d534230dac3ed134d" },
   "obsidian.nvim": { "branch": "main", "commit": "59d274bec753b0a60a994d3dce14a43d91790b57" },
-  "orgmode": { "branch": "master", "commit": "e34919c87af1e73d596a69e0748fcc67e76c5dfb" },
+  "orgmode": { "branch": "master", "commit": "d44ec9b5d2fbad70c1ee3b5534eb8bc76111719f" },
   "persistence.nvim": { "branch": "main", "commit": "4982499c1636eac254b72923ab826ee7827b3084" },
   "plenary.nvim": { "branch": "master", "commit": "4f71c0c4a196ceb656c824a70792f3df3ce6bb6d" },
   "telescope-fzf-native.nvim": { "branch": "main", "commit": "6c921ca12321edaa773e324ef64ea301a1d0da62" },
