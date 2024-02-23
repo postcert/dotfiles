@@ -1,0 +1,45 @@
+
+"Sources
+"https://git.jonathanh.co.uk/jab2870/Dotfiles/src/branch/master/tridactyl/.config/tridactyl/tridactylrc
+"https://github.com/tridactyl/tridactyl/blob/master/.tridactylrc
+
+" Reset all settings
+sanitize tridactyllocal tridactylsync
+
+" General
+
+colours dark
+set newtab about:blank
+set smoothscroll true
+
+
+" Binds
+
+" Ctrl-F should use the browser's native 'find' functionality.
+unbind <C-f>
+
+bind / fillcmdline find
+bind ? fillcmdline find -?
+bind n findnext 1
+bind N findnext -1
+
+bind j scrollline 5
+bind k scrollline -5
+
+bind J tabprev
+bind K tabnext
+
+bind x tabclose
+
+" Binds for new reader mode
+bind gr reader
+bind gR reader --tab
+
+
+" Disable on certain sites
+autocmd DocStart mail.google.com mode ignore
+autocmd DocStart leetcode.com mode ignore
+
+" Sometimes the status bar in the bottom left corner overlaps the Tridactyl
+" command line, so set an option to move the status bar to the right.
+guiset_quiet hoverlink right
