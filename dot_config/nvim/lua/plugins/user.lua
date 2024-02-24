@@ -256,6 +256,7 @@ if true then
         -- see below for full list of options 👇
       },
     },
+    { "danilshvalov/org-modern.nvim" },
     {
       "nvim-orgmode/orgmode",
       dependencies = {
@@ -274,10 +275,29 @@ if true then
           ensure_installed = { "org" },
         })
 
+        local Menu = require("org-modern.menu")
         -- Setup orgmode
         require("orgmode").setup({
           org_agenda_files = "~/Dropbox/personal/org/**/*",
           org_default_notes_file = "~/Dropbox/personal/org/refile.org",
+          ui = {
+            menu = {
+              handler = function(data)
+                Menu:new({
+                  window = {
+                    margin = { 1, 0, 1, 0 },
+                    padding = { 0, 1, 0, 1 },
+                    title_pos = "center",
+                    border = "single",
+                    zindex = 1000,
+                  },
+                  icons = {
+                    separator = "➜",
+                  },
+                }):open(data)
+              end,
+            },
+          },
         })
       end,
     },
