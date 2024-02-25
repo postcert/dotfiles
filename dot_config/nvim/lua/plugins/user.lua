@@ -298,8 +298,20 @@ if true then
               end,
             },
           },
+          mappings = {
+            org = {
+              org_toggle_checkbox = "<Leader>oz",
+            },
+          },
         })
       end,
     },
+    {
+      "tpope/vim-repeat",
+    },
+    -- Not as nice as I thought it'd be
+    -- {
+    --   "dhruvasagar/vim-table-mode",
+    -- },
   }
 end
