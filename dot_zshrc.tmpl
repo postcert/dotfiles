@@ -48,9 +48,12 @@ plugins=(
 {{ end }}
 )
 
-# Plugin config
+# Path Fun
+export PATH="$HOME/.config/emacs/bin:$PATH"
+
+## OS specific
 {{ if eq .chezmoi.os "darwin" }}
-#ZSH_TMUX_ITERM2=true
+export PATH="$HOMEBREW_PREFIX/opt/findutils/libexec/gnubin:$PATH"
 {{ else if eq .chezmoi.os "linux" }}
 {{ end }}
 
