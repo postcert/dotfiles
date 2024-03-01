@@ -50,5 +50,6 @@
 ;; (unpin! t)
 
 (package! evil-tutor)
-(package! treesit-auto)
+;; (package! treesit-auto)
 (package! tldr)
+(package! org-super-agenda)
