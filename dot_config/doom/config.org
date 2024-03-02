@@ -1,3 +1,8 @@
+#+title: Config
+
+* Config
+** Header
+#+begin_src emacs-lisp
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
@@ -39,13 +44,21 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
-
+#+end_src
+** Constants
+*** User Info
+#+begin_src emacs-lisp
 (setq user-full-name "postcert"
       user-email-address "postcert@gmail.com")
-
+#+end_src
+*** Paths
+#+begin_src emacs-lisp
 (setq projectile-project-search-path '("~/projects/"))
 (setq my/org-directory "~/Dropbox/personal/org/")
-
+#+end_src
+** Visual
+*** Theme
+#+begin_src emacs-lisp
 ;; theme
 (use-package! doom-themes
   :ensure t
@@ -58,6 +71,9 @@
 (setq catppuccin-flavor 'frappe) ;; or 'latte, 'macchiato, or 'mocha
 (catppuccin-reload)
 
+#+end_src
+*** Font
+#+begin_src emacs-lisp
 (setq
  doom-font (font-spec :family "Hack Nerd Font Mono" :size 16)
  doom-variable-pitch-font (font-spec :family "Hack Nerd Font"))
@@ -69,13 +85,18 @@
 (custom-set-faces!
   '(font-lock-comment-face :slant italic)
   '(font-lock-keyword-face :slant italic))
-
+#+end_src
+*** Misc
+#+begin_src emacs-lisp
 ;; Flashes cursor on buffer/window/etc change
 (beacon-mode 1)
 
 ;; line numbers
 (setq display-line-numbers-type t)
-
+#+end_src
+*** Filetypes
+**** Markdown
+#+begin_src emacs-lisp
 (custom-set-faces
  '(markdown-header-face ((t (:inherit font-lock-function-name-face :weight bold :family "variable-pitch"))))
  '(markdown-header-face-1 ((t (:inherit markdown-header-face :height 1.7))))
@@ -84,20 +105,36 @@
  '(markdown-header-face-4 ((t (:inherit markdown-header-face :height 1.4))))
  '(markdown-header-face-5 ((t (:inherit markdown-header-face :height 1.3))))
  '(markdown-header-face-6 ((t (:inherit markdown-header-face :height 1.2)))))
-
+#+end_src
+** Buffers
+*** Auto Revert
+Load external file changes automatically (will query for modified buffers)
+#+begin_src emacs-lisp
 (global-auto-revert-mode 1)
 (setq global-auto-revert-non-file-buffers t)
+#+end_src
+** Org
+#+begin_src emacs-lisp
 
 (after! org
   (setq org-directory my/org-directory)
   ;; No *'s around bold or /'s for italics
   org-hide-emphasis-markers t)
-
+#+end_src
+*** Journal
+#+begin_src emacs-lisp
 (setq org-journal-dir (concat my/org-directory "journal/")
       org-journal-date-prefix "* "
       org-journal-time-prefix "** "
       org-journal-date-format "%B %d, %Y (%A) "
       org-journal-file-format "%Y-%m-%d.org")
-
+#+end_src
+** Misc
+#+begin_src emacs-lisp
 ;; No confirm on exit
 (setq confirm-kill-emacs nil)
+#+end_src
+* Sources
+dangirsh: https://github.com/dangirsh/.doom.d/blob/master/README.org
+dwt1: https://gitlab.com/dwt1/dotfiles/-/blob/master/.config/doom/config.org
+zzamboni: https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/

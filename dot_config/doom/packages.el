@@ -50,6 +50,8 @@
 ;; (unpin! t)
 
 (package! evil-tutor)
-;; (package! treesit-auto)
-(package! tldr)
+(package! catppuccin-theme)
 (package! org-super-agenda)
+(package! tldr)
+(package! beacon)
+(package! rainbow-mode)
