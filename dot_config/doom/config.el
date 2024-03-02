@@ -89,9 +89,15 @@
 (setq global-auto-revert-non-file-buffers t)
 
 (after! org
-  (setq org-directory my/org-directory)
-  ;; No *'s around bold or /'s for italics
-  org-hide-emphasis-markers t)
+  (setq org-directory my/org-directory
+        ;; No *'s around bold or /'s for italics
+        org-hide-emphasis-markers t))
+(add-hook! org-mode :append #'org-appear-mode)
+
+;; Persist clocks and history
+(after! org-clock
+  (setq org-clock-persist t)
+  (org-clock-persistence-insinuate))
 
 (setq org-journal-dir (concat my/org-directory "journal/")
       org-journal-date-prefix "* "

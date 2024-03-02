@@ -117,9 +117,15 @@ Load external file changes automatically (will query for modified buffers)
 #+begin_src emacs-lisp
 
 (after! org
-  (setq org-directory my/org-directory)
-  ;; No *'s around bold or /'s for italics
-  org-hide-emphasis-markers t)
+  (setq org-directory my/org-directory
+        ;; No *'s around bold or /'s for italics
+        org-hide-emphasis-markers t))
+(add-hook! org-mode :append #'org-appear-mode)
+
+;; Persist clocks and history
+(after! org-clock
+  (setq org-clock-persist t)
+  (org-clock-persistence-insinuate))
 #+end_src
 *** Journal
 #+begin_src emacs-lisp
@@ -135,6 +141,7 @@ Load external file changes automatically (will query for modified buffers)
 (setq confirm-kill-emacs nil)
 #+end_src
 * Sources
+
 dangirsh: https://github.com/dangirsh/.doom.d/blob/master/README.org
 dwt1: https://gitlab.com/dwt1/dotfiles/-/blob/master/.config/doom/config.org
 zzamboni: https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
