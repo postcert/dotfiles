@@ -55,6 +55,7 @@
 #+begin_src emacs-lisp
 (setq projectile-project-search-path '("~/projects/"))
 (setq my/org-directory "~/Dropbox/personal/org/")
+(setq my/org-agenda-directory "~/Dropbox/personal/org")
 #+end_src
 ** Visual
 *** Theme
@@ -75,7 +76,7 @@
 *** Font
 #+begin_src emacs-lisp
 (setq
- doom-font (font-spec :family "Hack Nerd Font Mono" :size 16)
+ doom-font (font-spec :family "Hack Nerd Font Mono" :size 14)
  doom-variable-pitch-font (font-spec :family "Hack Nerd Font"))
 
 (after! doom-themes
@@ -86,10 +87,17 @@
   '(font-lock-comment-face :slant italic)
   '(font-lock-keyword-face :slant italic))
 #+end_src
+*** Code context
+#+begin_src emacs-lisp
+(use-package window-stool
+  :config
+  (add-hook 'prog-mode-hook #'window-stool-mode))
+#+end_src
+**** TODO Switch to [[https://github.com/zbelial/treesitter-context.el][treesitter-context]]
 *** Misc
 #+begin_src emacs-lisp
 ;; Flashes cursor on buffer/window/etc change
-(beacon-mode 1)
+;; (beacon-mode 1)
 
 ;; line numbers
 (setq display-line-numbers-type t)
@@ -115,9 +123,9 @@ Load external file changes automatically (will query for modified buffers)
 #+end_src
 ** Org
 #+begin_src emacs-lisp
-
 (after! org
   (setq org-directory my/org-directory
+        org-agenda-files (directory-files-recursively my/org-directory "\\.org$")
         ;; No *'s around bold or /'s for italics
         org-hide-emphasis-markers t))
 (add-hook! org-mode :append #'org-appear-mode)
@@ -126,6 +134,16 @@ Load external file changes automatically (will query for modified buffers)
 (after! org-clock
   (setq org-clock-persist t)
   (org-clock-persistence-insinuate))
+
+;; Org-habit
+(use-package! org-habit
+  :after org
+  :config
+  (setq
+        org-habit-following-days 5
+        org-habit-preceding-days 35
+        org-habit-show-habits t
+        org-habit-show-habits-only-for-today t))
 #+end_src
 *** Journal
 #+begin_src emacs-lisp
@@ -139,6 +157,10 @@ Load external file changes automatically (will query for modified buffers)
 #+begin_src emacs-lisp
 ;; No confirm on exit
 (setq confirm-kill-emacs nil)
+
+;; auto-save
+(setq auto-save-visited-mode t)
+(auto-save-visited-mode +1)
 #+end_src
 * Sources
 

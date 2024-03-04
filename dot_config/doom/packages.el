@@ -58,3 +58,8 @@
 (package! org-appear
   :recipe (:host github
            :repo "awth13/org-appear"))
+
+(package! window-stool
+  :recipe (:host github
+           :repo "jaszhe/window-stool"
+           :files ("*.el")))

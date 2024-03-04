@@ -45,6 +45,7 @@
 
 (setq projectile-project-search-path '("~/projects/"))
 (setq my/org-directory "~/Dropbox/personal/org/")
+(setq my/org-agenda-directory "~/Dropbox/personal/org")
 
 ;; theme
 (use-package! doom-themes
@@ -59,7 +60,7 @@
 (catppuccin-reload)
 
 (setq
- doom-font (font-spec :family "Hack Nerd Font Mono" :size 16)
+ doom-font (font-spec :family "Hack Nerd Font Mono" :size 14)
  doom-variable-pitch-font (font-spec :family "Hack Nerd Font"))
 
 (after! doom-themes
@@ -70,8 +71,12 @@
   '(font-lock-comment-face :slant italic)
   '(font-lock-keyword-face :slant italic))
 
+(use-package window-stool
+  :config
+  (add-hook 'prog-mode-hook #'window-stool-mode))
+
 ;; Flashes cursor on buffer/window/etc change
-(beacon-mode 1)
+;; (beacon-mode 1)
 
 ;; line numbers
 (setq display-line-numbers-type t)
@@ -90,6 +95,7 @@
 
 (after! org
   (setq org-directory my/org-directory
+        org-agenda-files (directory-files-recursively my/org-directory "\\.org$")
         ;; No *'s around bold or /'s for italics
         org-hide-emphasis-markers t))
 (add-hook! org-mode :append #'org-appear-mode)
@@ -99,6 +105,16 @@
   (setq org-clock-persist t)
   (org-clock-persistence-insinuate))
 
+;; Org-habit
+(use-package! org-habit
+  :after org
+  :config
+  (setq
+        org-habit-following-days 5
+        org-habit-preceding-days 35
+        org-habit-show-habits t
+        org-habit-show-habits-only-for-today t))
+
 (setq org-journal-dir (concat my/org-directory "journal/")
       org-journal-date-prefix "* "
       org-journal-time-prefix "** "
@@ -107,3 +123,7 @@
 
 ;; No confirm on exit
 (setq confirm-kill-emacs nil)
+
+;; auto-save
+(setq auto-save-visited-mode t)
+(auto-save-visited-mode +1)
