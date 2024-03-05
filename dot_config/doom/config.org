@@ -121,6 +121,18 @@ Load external file changes automatically (will query for modified buffers)
 (global-auto-revert-mode 1)
 (setq global-auto-revert-non-file-buffers t)
 #+end_src
+** Programming
+*** Copilot
+#+begin_src emacs-lisp
+;; accept completion from copilot and fallback to company
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+              ("<tab>" . 'copilot-accept-completion)
+              ("TAB" . 'copilot-accept-completion)
+              ("C-TAB" . 'copilot-accept-completion-by-word)
+              ("C-<tab>" . 'copilot-accept-completion-by-word)))
+#+end_src
 ** Org
 #+begin_src emacs-lisp
 (after! org

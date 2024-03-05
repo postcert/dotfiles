@@ -63,3 +63,7 @@
   :recipe (:host github
            :repo "jaszhe/window-stool"
            :files ("*.el")))
+(package! copilot
+  :recipe (:host github
+           :repo "copilot-emacs/copilot.el"
+           :files ("*.el" "dist")))
