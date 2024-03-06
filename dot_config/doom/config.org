@@ -139,7 +139,11 @@ Load external file changes automatically (will query for modified buffers)
   (setq org-directory my/org-directory
         org-agenda-files (directory-files-recursively my/org-directory "\\.org$")
         ;; No *'s around bold or /'s for italics
-        org-hide-emphasis-markers t))
+        org-hide-emphasis-markers t
+        ;; show sub and superscript
+        org-pretty-entities t
+        org-log-done 'time
+        org-log-into-drawer t))
 (add-hook! org-mode :append #'org-appear-mode)
 
 ;; Persist clocks and history
@@ -156,14 +160,31 @@ Load external file changes automatically (will query for modified buffers)
         org-habit-preceding-days 35
         org-habit-show-habits t
         org-habit-show-habits-only-for-today t))
+
+;; Org-media-note
+(use-package! org-media-note
+  :hook (org-mode .  org-media-note-mode)
+  ;; :bind (
+         ;; (:map org-mode ("m-v" . org-media-note-hydra/body)))  ;; Main entrance
+  :config
+  (setq org-media-note-screenshot-image-dir "~/Notes/imgs/")  ;; Folder to save screenshot
+)
+(map! :after org-media-note
+      :localleader
+      (:map org-mode-map
+        :desc "org-media-note"
+            "w" #'org-media-note-hydra/body))
+;; (define-advice mpv-get-property (:around (oldfn &rest arg) ignore-errors) "Do not warn me \\='get_property property unavailable.\\='." (ignore-errors (apply oldfn arg)))
 #+end_src
 *** Journal
 #+begin_src emacs-lisp
 (setq org-journal-dir (concat my/org-directory "journal/")
-      org-journal-date-prefix "* "
-      org-journal-time-prefix "** "
-      org-journal-date-format "%B %d, %Y (%A) "
-      org-journal-file-format "%Y-%m-%d.org")
+      org-journal-file-type 'monthly
+      org-journal-file-header
+      "#+title: %B, %Y\n#+category: journal\n\n"
+      ;; org-journal-time-format "%I %p"
+      org-journal-date-format "%A %d"
+      org-journal-file-format "%m-%y.org")
 #+end_src
 ** Misc
 #+begin_src emacs-lisp
@@ -174,8 +195,15 @@ Load external file changes automatically (will query for modified buffers)
 (setq auto-save-visited-mode t)
 (auto-save-visited-mode +1)
 #+end_src
+* Bugfixes
+** [[https://github.com/doomemacs/doomemacs/issues/7347][invalid function org-element-with-disabled-cache]]
+Made a modification to the built-in orgconfiguration [[file:~/.config/emacs/.local/straight/repos/org/lisp/org-element.el::defsubst org-element-at-point-no-context (&optional pom][here]].
+It's not really a fix to keep it from loading automatically :nervous:
+
 * Sources
 
 dangirsh: https://github.com/dangirsh/.doom.d/blob/master/README.org
 dwt1: https://gitlab.com/dwt1/dotfiles/-/blob/master/.config/doom/config.org
 zzamboni: https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
+
+elisp (map! :after elm ; ensure your keys are bound after defaults, if any :localleader :map elm-mode-map :prefix ("e" . "elm") :desc "Elm compile" :n "c" #'elm-compile-main :desc "Elm compile" :n "e" #'elm-compile-main)

@@ -67,3 +67,6 @@
   :recipe (:host github
            :repo "copilot-emacs/copilot.el"
            :files ("*.el" "dist")))
+(package! pretty-hydra)  ;; dependency
+(package! mpv)           ;; dependency
+(package! org-media-note :recipe (:host github :repo "yuchen-lea/org-media-note"))

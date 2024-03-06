@@ -106,7 +106,11 @@
   (setq org-directory my/org-directory
         org-agenda-files (directory-files-recursively my/org-directory "\\.org$")
         ;; No *'s around bold or /'s for italics
-        org-hide-emphasis-markers t))
+        org-hide-emphasis-markers t
+        ;; show sub and superscript
+        org-pretty-entities t
+        org-log-done 'time
+        org-log-into-drawer t))
 (add-hook! org-mode :append #'org-appear-mode)
 
 ;; Persist clocks and history
@@ -124,11 +128,28 @@
         org-habit-show-habits t
         org-habit-show-habits-only-for-today t))
 
+;; Org-media-note
+(use-package! org-media-note
+  :hook (org-mode .  org-media-note-mode)
+  ;; :bind (
+         ;; (:map org-mode ("m-v" . org-media-note-hydra/body)))  ;; Main entrance
+  :config
+  (setq org-media-note-screenshot-image-dir "~/Notes/imgs/")  ;; Folder to save screenshot
+)
+(map! :after org-media-note
+      :localleader
+      (:map org-mode-map
+        :desc "org-media-note"
+            "w" #'org-media-note-hydra/body))
+;; (define-advice mpv-get-property (:around (oldfn &rest arg) ignore-errors) "Do not warn me \\='get_property property unavailable.\\='." (ignore-errors (apply oldfn arg)))
+
 (setq org-journal-dir (concat my/org-directory "journal/")
-      org-journal-date-prefix "* "
-      org-journal-time-prefix "** "
-      org-journal-date-format "%B %d, %Y (%A) "
-      org-journal-file-format "%Y-%m-%d.org")
+      org-journal-file-type 'monthly
+      org-journal-file-header
+      "#+title: %B, %Y\n#+category: journal\n\n"
+      ;; org-journal-time-format "%I %p"
+      org-journal-date-format "%A %d"
+      org-journal-file-format "%m-%y.org")
 
 ;; No confirm on exit
 (setq confirm-kill-emacs nil)
