@@ -45,11 +45,10 @@
 
 (setq projectile-project-search-path '("~/projects/"))
 (setq my/org-directory "~/Dropbox/personal/org/")
-(setq my/org-agenda-directory "~/Dropbox/personal/org")
+(setq my/dropbox "~/Dropbox/personal/")
 
 ;; theme
 (use-package! doom-themes
-  :ensure t
   :config
   (load-theme 'catppuccin t)
   ;; Enable flashing mode-line on errors
@@ -93,6 +92,9 @@
 (global-auto-revert-mode 1)
 (setq global-auto-revert-non-file-buffers t)
 
+(setq auto-save-visited-mode t)
+(auto-save-visited-mode +1)
+
 ;; accept completion from copilot and fallback to company
 (use-package! copilot
   :hook (prog-mode . copilot-mode)
@@ -102,9 +104,9 @@
               ("C-TAB" . 'copilot-accept-completion-by-word)
               ("C-<tab>" . 'copilot-accept-completion-by-word)))
 
+(setq org-directory my/org-directory)
 (after! org
-  (setq org-directory my/org-directory
-        org-agenda-files (directory-files-recursively my/org-directory "\\.org$")
+  (setq org-agenda-files (directory-files-recursively my/org-directory "\\.org$")
         ;; No *'s around bold or /'s for italics
         org-hide-emphasis-markers t
         ;; show sub and superscript
@@ -151,9 +153,8 @@
       org-journal-date-format "%A %d"
       org-journal-file-format "%m-%y.org")
 
+(after! org-roam
+  (setq org-roam-directory (concat my/org-directory "org_roam")))
+
 ;; No confirm on exit
 (setq confirm-kill-emacs nil)
-
-;; auto-save
-(setq auto-save-visited-mode t)
-(auto-save-visited-mode +1)

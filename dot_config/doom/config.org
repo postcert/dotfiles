@@ -55,14 +55,13 @@
 #+begin_src emacs-lisp
 (setq projectile-project-search-path '("~/projects/"))
 (setq my/org-directory "~/Dropbox/personal/org/")
-(setq my/org-agenda-directory "~/Dropbox/personal/org")
+(setq my/dropbox "~/Dropbox/personal/")
 #+end_src
-** Visual
+
 *** Theme
 #+begin_src emacs-lisp
 ;; theme
 (use-package! doom-themes
-  :ensure t
   :config
   (load-theme 'catppuccin t)
   ;; Enable flashing mode-line on errors
@@ -73,6 +72,7 @@
 (catppuccin-reload)
 
 #+end_src
+
 *** Font
 #+begin_src emacs-lisp
 (setq
@@ -102,6 +102,7 @@
 ;; line numbers
 (setq display-line-numbers-type t)
 #+end_src
+
 *** Filetypes
 **** Markdown
 #+begin_src emacs-lisp
@@ -114,6 +115,7 @@
  '(markdown-header-face-5 ((t (:inherit markdown-header-face :height 1.3))))
  '(markdown-header-face-6 ((t (:inherit markdown-header-face :height 1.2)))))
 #+end_src
+
 ** Buffers
 *** Auto Revert
 Load external file changes automatically (will query for modified buffers)
@@ -121,6 +123,13 @@ Load external file changes automatically (will query for modified buffers)
 (global-auto-revert-mode 1)
 (setq global-auto-revert-non-file-buffers t)
 #+end_src
+
+*** Autosave
+#+begin_src emacs-lisp
+(setq auto-save-visited-mode t)
+(auto-save-visited-mode +1)
+#+end_src
+
 ** Programming
 *** Copilot
 #+begin_src emacs-lisp
@@ -135,9 +144,10 @@ Load external file changes automatically (will query for modified buffers)
 #+end_src
 ** Org
 #+begin_src emacs-lisp
+
+(setq org-directory my/org-directory)
 (after! org
-  (setq org-directory my/org-directory
-        org-agenda-files (directory-files-recursively my/org-directory "\\.org$")
+  (setq org-agenda-files (directory-files-recursively my/org-directory "\\.org$")
         ;; No *'s around bold or /'s for italics
         org-hide-emphasis-markers t
         ;; show sub and superscript
@@ -186,14 +196,17 @@ Load external file changes automatically (will query for modified buffers)
       org-journal-date-format "%A %d"
       org-journal-file-format "%m-%y.org")
 #+end_src
+
+*** Roam
+#+begin_src emacs-lisp
+(after! org-roam
+  (setq org-roam-directory (concat my/org-directory "org_roam")))
+#+end_src
 ** Misc
 #+begin_src emacs-lisp
 ;; No confirm on exit
 (setq confirm-kill-emacs nil)
 
-;; auto-save
-(setq auto-save-visited-mode t)
-(auto-save-visited-mode +1)
 #+end_src
 * Bugfixes
 ** [[https://github.com/doomemacs/doomemacs/issues/7347][invalid function org-element-with-disabled-cache]]
@@ -205,5 +218,3 @@ It's not really a fix to keep it from loading automatically :nervous:
 dangirsh: https://github.com/dangirsh/.doom.d/blob/master/README.org
 dwt1: https://gitlab.com/dwt1/dotfiles/-/blob/master/.config/doom/config.org
 zzamboni: https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
-
-elisp (map! :after elm ; ensure your keys are bound after defaults, if any :localleader :map elm-mode-map :prefix ("e" . "elm") :desc "Elm compile" :n "c" #'elm-compile-main :desc "Elm compile" :n "e" #'elm-compile-main)
