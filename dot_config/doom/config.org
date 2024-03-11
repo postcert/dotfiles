@@ -200,7 +200,7 @@ Load external file changes automatically (will query for modified buffers)
 *** Roam
 #+begin_src emacs-lisp
 (after! org-roam
-  (setq org-roam-directory (concat my/org-directory "org_roam")))
+  (setq org-roam-directory (concat my/dropbox "org_roam")))
 #+end_src
 ** Misc
 #+begin_src emacs-lisp

@@ -154,7 +154,7 @@
       org-journal-file-format "%m-%y.org")
 
 (after! org-roam
-  (setq org-roam-directory (concat my/org-directory "org_roam")))
+  (setq org-roam-directory (concat my/dropbox "org_roam")))
 
 ;; No confirm on exit
 (setq confirm-kill-emacs nil)
