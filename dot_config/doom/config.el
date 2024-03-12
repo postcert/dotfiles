@@ -95,6 +95,21 @@
 (setq auto-save-visited-mode t)
 (auto-save-visited-mode +1)
 
+(after! ws-butler
+  (setq ws-butler-trim-predicate
+      (lambda (beg end)
+        (let* ((current-line (line-number-at-pos))
+               (beg-line (line-number-at-pos beg))
+               (end-line (line-number-at-pos end))
+               ;; Assuming the use of evil-mode for insert mode detection. Adjust if using a different system.
+               (in-insert-mode (and (bound-and-true-p evil-mode)
+                                    (eq 'insert evil-state))))
+          ;; Return true (allow trimming) unless in insert mode and the current line is within the region.
+          (not (and in-insert-mode
+                    (>= current-line beg-line)
+                    (<= current-line end-line))))))
+)
+
 ;; accept completion from copilot and fallback to company
 (use-package! copilot
   :hook (prog-mode . copilot-mode)

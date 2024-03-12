@@ -130,6 +130,27 @@ Load external file changes automatically (will query for modified buffers)
 (auto-save-visited-mode +1)
 #+end_src
 
+*** ws-butler
+Butler trims whitespace on modified lines on save and I have auto-save enabled.
+I originally had `ws-butler-keep-whitespace-before-point` to trim the files on disk but leave a "virtual whitespace" in the buffer. But that pissed off the org-element caching functionality.
+So I went ahead and created a predicate function to leave me alone when I'm typing (in evil insert mode)
+#+begin_src emacs-lisp
+(after! ws-butler
+  (setq ws-butler-trim-predicate
+      (lambda (beg end)
+        (let* ((current-line (line-number-at-pos))
+               (beg-line (line-number-at-pos beg))
+               (end-line (line-number-at-pos end))
+               ;; Assuming the use of evil-mode for insert mode detection. Adjust if using a different system.
+               (in-insert-mode (and (bound-and-true-p evil-mode)
+                                    (eq 'insert evil-state))))
+          ;; Return true (allow trimming) unless in insert mode and the current line is within the region.
+          (not (and in-insert-mode
+                    (>= current-line beg-line)
+                    (<= current-line end-line))))))
+)
+#+end_src
+
 ** Programming
 *** Copilot
 #+begin_src emacs-lisp
@@ -142,6 +163,7 @@ Load external file changes automatically (will query for modified buffers)
               ("C-TAB" . 'copilot-accept-completion-by-word)
               ("C-<tab>" . 'copilot-accept-completion-by-word)))
 #+end_src
+
 ** Org
 #+begin_src emacs-lisp
 
