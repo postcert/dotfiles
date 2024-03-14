@@ -178,6 +178,9 @@ So I went ahead and created a predicate function to leave me alone when I'm typi
         org-log-into-drawer t))
 (add-hook! org-mode :append #'org-appear-mode)
 
+;; to enable reset_check_boxes
+(add-to-list 'org-modules 'org-checklist)
+
 ;; Persist clocks and history
 (after! org-clock
   (setq org-clock-persist t)
@@ -217,6 +220,79 @@ So I went ahead and created a predicate function to leave me alone when I'm typi
       ;; org-journal-time-format "%I %p"
       org-journal-date-format "%A %d"
       org-journal-file-format "%m-%y.org")
+#+end_src
+
+#+begin_src emacs-lisp
+(defvar my/org-mood-list
+  '("Joyful" "Happy" "Grateful" "Optimistic" "Excited" "Energized" "Refreshed" "Content"
+    "Calm" "Relaxed" "Peaceful" "Tranquil" "Hopeful" "Interested" "Curious" "Amused"
+    "Mischievous" "Reflective" "Sleepy" "Tired" "Exhausted" "Frustrated" "Worried"
+    "Anxious" "Confused" "Irritated" "Angry" "Lonely" "Disappointed" "Gloomy" "Sad"
+    "Rejected")
+  "Sorted list of moods from positive to negative for org-mode mood property.")
+(defvar my/org-moods-with-descriptions
+  '(("None" . "No specific mood or prefer not to say.")
+    ("Happy" . "Feeling or showing pleasure or contentment.")
+    ("Joyful" . "Experiencing, causing, or showing joy; happy.")
+    ("Grateful" . "Feeling or showing an appreciation for something done or received.")
+    ("Optimistic" . "Hopeful and confident about the future.")
+    ("Excited" . "Very enthusiastic and eager.")
+    ("Energized" . "Give vitality and enthusiasm to.")
+    ("Refreshed" . "Give new strength or energy to; reinvigorate.")
+    ("Content" . "In a state of peaceful happiness.")
+    ("Calm" . "Not showing or feeling nervousness, anger, or other strong emotions.")
+    ("Relaxed" . "Free from tension and anxiety; at ease.")
+    ("Peaceful" . "Free from disturbance; tranquil.")
+    ("Tranquil" . "Free from disturbance; calm.")
+    ("Hopeful" . "Feeling or inspiring optimism about a future event.")
+    ("Interested" . "Showing curiosity or concern about something or someone; having a feeling of interest.")
+    ("Curious" . "Eager to know or learn something.")
+    ("Amused" . "Find something funny or entertaining.")
+    ("Mischievous" . "Causing or showing a fondness for causing trouble in a playful way.")
+    ("Reflective" . "Relating to or characterized by deep thought; thoughtful.")
+    ("Sleepy" . "Needing or ready for sleep.")
+    ("Tired" . "Drained of strength and energy; fatigued often to the point of exhaustion.")
+    ("Exhausted" . "Drained of one's physical or mental resources; very tired.")
+    ("Frustrated" . "Feeling or expressing distress and annoyance resulting from an inability to change or achieve something.")
+    ("Worried" . "Anxious or troubled about actual or potential problems.")
+    ("Anxious" . "Experiencing worry, unease, or nervousness.")
+    ("Confused" . "Unable to think clearly; bewildered.")
+    ("Irritated" . "Showing or feeling slight anger; annoyed.")
+    ("Angry" . "Feeling or showing strong annoyance, displeasure, or hostility.")
+    ("Lonely" . "Sad because one has no friends or company.")
+    ("Disappointed" . "Sad or displeased because someone or something has failed to fulfill one's hopes or expectations.")
+    ("Gloomy" . "Dark or poorly lit, especially so as to appear depressing or frightening.")
+    ("Sad" . "Feeling or showing sorrow; unhappy.")
+    ("Rejected" . "Dismissed as inadequate, inappropriate, or not to one's taste."))
+  "Association list of moods and their descriptions for marginalia annotations.")
+
+(defun my/marginalia-annotate-mood (cand)
+  (when-let ((desc (cdr (assoc cand my/org-moods-with-descriptions))))
+    (concat (propertize " " 'display '(space :align-to 20))
+            (propertize desc 'face 'marginalia-documentation))))
+
+(after! marginalia
+  ;; Example of adding a prompt category mapping
+  (add-to-list 'marginalia-prompt-categories '("Select mood: " . mood))
+  (add-to-list 'marginalia-annotator-registry
+               '(mood my/marginalia-annotate-mood marginalia-annotate-variable builtin none)))
+
+(defun my/org-set-mood-property ()
+  "Set a predefined 'MOOD' property under the current Org mode heading."
+  (interactive)
+  (if (eq major-mode 'org-mode)
+      (let* ((moods (mapcar #'car my/org-moods-with-descriptions))
+             (selected-mood (completing-read "Select mood: " moods nil nil)))
+        (org-entry-put nil "MOOD" selected-mood))
+    (message "You are not in an Org mode buffer.")))
+
+(defun my/org-journal-mood-then-insert-mode ()
+  "Switch to insert mode after creating a journal entry and setting mood."
+  (my/org-set-mood-property) ;; Set the mood first.
+  (evil-insert 1)) ;; Then switch to insert mode.
+
+(after! org-journal
+  (add-hook 'org-journal-after-entry-create-hook 'my/org-journal-mood-then-insert-mode))
 #+end_src
 
 *** Roam
