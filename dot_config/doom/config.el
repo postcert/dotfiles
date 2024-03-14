@@ -171,13 +171,6 @@
       org-journal-date-format "%A %d"
       org-journal-file-format "%m-%y.org")
 
-(defvar my/org-mood-list
-  '("Joyful" "Happy" "Grateful" "Optimistic" "Excited" "Energized" "Refreshed" "Content"
-    "Calm" "Relaxed" "Peaceful" "Tranquil" "Hopeful" "Interested" "Curious" "Amused"
-    "Mischievous" "Reflective" "Sleepy" "Tired" "Exhausted" "Frustrated" "Worried"
-    "Anxious" "Confused" "Irritated" "Angry" "Lonely" "Disappointed" "Gloomy" "Sad"
-    "Rejected")
-  "Sorted list of moods from positive to negative for org-mode mood property.")
 (defvar my/org-moods-with-descriptions
   '(("None" . "No specific mood or prefer not to say.")
     ("Happy" . "Feeling or showing pleasure or contentment.")
