@@ -191,7 +191,7 @@ So I went ahead and created a predicate function to leave me alone when I'm typi
   :after org
   :config
   (setq
-        org-habit-following-days 5
+        org-habit-following-days 1
         org-habit-preceding-days 35
         org-habit-show-habits t
         org-habit-show-habits-only-for-today t))
@@ -287,7 +287,64 @@ So I went ahead and created a predicate function to leave me alone when I'm typi
 (after! org-journal
   (add-hook 'org-journal-after-entry-create-hook 'my/org-journal-mood-then-insert-mode))
 #+end_src
+*** Super Agenda
+#+begin_src emacs-lisp
+(use-package! org-super-agenda
+  :after org-agenda
+  :init
+  (setq
+   ;; org-agenda-skip-scehduled-if-done t
+   ;; org-agenda-skip-deadline-if-done t
+   org-agenda-include-deadlines t
+   org-agenda-block-separator nil
+   org-agenda-compact-blocks t
+   org-agenda-start-day nil
+   org-agenda-show-future-repeats nil
+   org-agenda-time-grid '((daily today require-timed remove-match)
+                        (600 700 800 900 1000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000)
+                        " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄"))
+   (setq org-super-agenda-groups '(
+                        (:name "Today"
+                         :time-grid t
+                         :scheduled today)
+                        (:name "Life"
+                         :tag "life")
+                        (:name "Chores"
+                         :todo "Today"
+                         :tag "chore")
+                        (:name "Due today"
+                         :deadline today)
+                        (:name "Important"
+                         :priority "A")
+                        (:name "Overdue"
+                         :deadline past)
+                        (:name "Due soon"
+                         :deadline future)
+                        (:name "Habits"
+                         :tag "habit")
+                             ))
+  :config
+  (org-super-agenda-mode))
 
+(after! (org-super-agenda evil-org-agenda)
+   (setq org-super-agenda-header-map evil-org-agenda-mode-map)) ;; https://github.com/alphapapa/org-super-agenda/issues/50
+
+#+end_src
+
+*** Yasnippet fix
+#+begin_src emacs-lisp
+(defun my/org-tab-conditional ()
+  (interactive)
+  (if (yas-active-snippets)
+      (yas-next-field-or-maybe-expand)
+    (org-cycle)))
+
+(map! :after evil-org
+      :map evil-org-mode-map
+      :i "<tab>" #'my/org-tab-conditional)
+;; (with-eval-after-load 'org
+;;   (define-key evil-org-mode-map (kbd "<tab>") #'my/org-tab-conditional))
+#+end_src
 *** Roam
 #+begin_src emacs-lisp
 (after! org-roam
@@ -297,7 +354,6 @@ So I went ahead and created a predicate function to leave me alone when I'm typi
 #+begin_src emacs-lisp
 ;; No confirm on exit
 (setq confirm-kill-emacs nil)
-
 #+end_src
 * Bugfixes
 ** [[https://github.com/doomemacs/doomemacs/issues/7347][invalid function org-element-with-disabled-cache]]
