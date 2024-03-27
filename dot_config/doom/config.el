@@ -290,5 +290,63 @@
 (after! org-roam
   (setq org-roam-directory (concat my/dropbox "org_roam")))
 
+(after! org
+  (require 'ace-window) ;; Ensure ace-window is loaded
+
+  (defun my/open-link-or-footnote-in-selected-window ()
+  "Open the Org link or footnote at point in a window selected with ace-window or split if only one window."
+  (interactive)
+  (let ((element (org-element-context))
+        (link))
+    ;; Determine if the element is a link or a footnote and get its path or link
+    (cond ((eq (org-element-type element) 'link)
+           (setq link (org-element-property :raw-link element)))
+          ((eq (org-element-type element) 'footnote-reference)
+           (let ((def (org-footnote-get-definition (org-element-property :label element))))
+             (setq link (concat "file:" (buffer-file-name))
+                   ;; Optionally, adjust this part to handle the footnote text or definition as needed
+                   ))))
+
+    ;; If only one window is visible, split it before selecting
+    (when (eq (length (window-list)) 1)
+      (split-window-right) ;; Or `split-window-below` to split horizontally
+      (other-window 1))
+
+    ;; Now select the window using ace-window, which will include the newly split window if applicable
+    (when link
+      (aw-select "Select window for opening link"
+                 (lambda (window)
+                   (when (window-live-p window)
+                     (select-window window)
+                     (if (string-prefix-p "file:" link)
+                         (find-file (substring link 5))
+                       (org-open-link-from-string link))))))))
+
+  (defun my/org-at-footnote-p ()
+  "Check if the point is at an Org footnote."
+  (interactive)
+  (let ((el (org-element-context)))
+    (or (eq (org-element-type el) 'footnote-reference)
+        (eq (org-element-type el) 'footnote-definition))))
+
+  (defun my/org-shift-return-open-ace-window ()
+  "Perform context-specific actions on Shift+Return in org-mode.
+- In tables, execute `org-table-copy-down`.
+- On links or footnotes, open them in a selected window."
+  (interactive)
+  (cond ((org-at-table-p)
+         (call-interactively 'org-table-copy-down))
+        ((or (org-in-regexp org-bracket-link-regexp 1)
+             (org-in-regexp org-link-plain-re 1)
+             (my/org-at-footnote-p))
+         (my/open-link-or-footnote-in-selected-window))
+        (t (message "Shift+Enter does not apply here."))))
+)
+
+(map! :after org
+      (:map org-mode-map
+        :desc "Open link or footnote in the a different window"
+            "S-<return>" 'my/org-shift-return-open-ace-window))
+
 ;; No confirm on exit
 (setq confirm-kill-emacs nil)
