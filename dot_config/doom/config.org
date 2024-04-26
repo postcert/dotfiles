@@ -150,7 +150,34 @@ So I went ahead and created a predicate function to leave me alone when I'm typi
                     (<= current-line end-line))))))
 )
 #+end_src
+*** Parantheses Highlighting
+Saw something online about why smartparens searching freezing up emacs in large org-mode files.
+That's my lazy assumption as to why it's disabled but I want that highlighting because I couldn't even finish this source block without blowing up emacs due to an unmatched pair.
+So this is a cheap and uninformed limit on characters searched for the matching pair.
+#+begin_src emacs-lisp
+(defvar my-sp-look-limit 5000
+  "Character limit for SmartParen look ahead/behind searches")
 
+(defun my-sp-forward-bound ()
+  "Limits the forward boundary for Smartparens searching"
+  (min (point-max) (+ (point) my-sp-look-limit)))
+
+(defun my-sp-backward-bound ()
+  "Limits the forward boundary for Smartparens searching"
+  (max (point-min) (- (point) my-sp-look-limit)))
+
+(after! smartparens
+        (add-hook 'org-mode-hook
+                  (lambda ()
+                    (setq-local sp-forward-bound-fn 'my-sp-forward-bound)
+                    (setq-local sp-backward-bound-fn 'my-sp-backward-bound)
+                    ;; The base smartparens-mode is already enabled
+                    (show-smartparens-mode 1))))
+#+end_src
+*** Relative line numbering
+#+begin_src emacs-lisp
+(setq display-line-numbers-type 'relative)
+#+end_src
 ** Programming
 *** Copilot
 #+begin_src emacs-lisp

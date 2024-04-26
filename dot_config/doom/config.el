@@ -110,6 +110,27 @@
                     (<= current-line end-line))))))
 )
 
+(defvar my-sp-look-limit 5000
+  "Character limit for SmartParen look ahead/behind searches")
+
+(defun my-sp-forward-bound ()
+  "Limits the forward boundary for Smartparens searching"
+  (min (point-max) (+ (point) my-sp-look-limit)))
+
+(defun my-sp-backward-bound ()
+  "Limits the forward boundary for Smartparens searching"
+  (max (point-min) (- (point) my-sp-look-limit)))
+
+(after! smartparens
+        (add-hook 'org-mode-hook
+                  (lambda ()
+                    (setq-local sp-forward-bound-fn 'my-sp-forward-bound)
+                    (setq-local sp-backward-bound-fn 'my-sp-backward-bound)
+                    ;; The base smartparens-mode is already enabled
+                    (show-smartparens-mode 1))))
+
+(setq display-line-numbers-type 'relative)
+
 ;; accept completion from copilot and fallback to company
 (use-package! copilot
   :hook (prog-mode . copilot-mode)
